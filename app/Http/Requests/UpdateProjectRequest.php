@@ -27,6 +27,8 @@ class UpdateProjectRequest extends FormRequest
             'title' => ['required', 'string'],
             'url' => ['required', 'url'],
             "content" => ['nullable', 'string'],
+            'type_id' => ['nullable', 'exists:types,id'],
+            'technologies' => ['nullable', 'exists:technologies,id'],
         ];
     }
 
@@ -40,6 +42,10 @@ class UpdateProjectRequest extends FormRequest
             'url.url' => 'I\'url deve essere un link',
 
             'content.string' => 'Il contenuto deve essere una stringa',
+
+            'type_id.exists' => 'La tipologia inserita non è valida',
+
+            'technologies.exists' => 'Le tecnologie inserite non sono valide',
         ];
     }
 }
