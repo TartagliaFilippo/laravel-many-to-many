@@ -25,6 +25,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
 
+
             <label for="type_id" class="form-label">Tipo</label>
             <select class="form-select" name="type_id" id="type_id">
                 <option value="">Nessun Tipo</option>
@@ -35,6 +36,15 @@
             @error('title')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+
+            <div class="form-check @error('technologies') is-invalid @enderror">
+                @foreach ($technologies as $technology)
+                    <input type="checkbox" name="technologies[]" id="technologies-{{ $technology->id }}"
+                        value="{{ $technology->id }}" class="form-check-control"
+                        @if (in_array($technology->id, old('technologies', $technology_ids))) checked @endif>
+                    <label for="technologies-{{ $technology->id }}">{{ $technology->label }}</label>
+                @endforeach
+            </div>
 
             <label for="url" class="form-label">Url Progetto</label>
             <input type="text" class="form-control @error('url') is-invalid @enderror" id="url" name="url"

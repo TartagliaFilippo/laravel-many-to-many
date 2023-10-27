@@ -9,7 +9,8 @@
                 {{ $project->title }}
             </div>
             <div class="card-body">
-                <div class="">{!! $project->getTypeBadge() !!}</div>
+                <div class=""><strong>Tipo:</strong> {!! $project->getTypeBadge() !!}</div>
+                <div class=""><strong>Tecnologie:</strong> {!! $project->getTechnologyBadges() !!}</div>
                 <a href="{{ $project->url }}">Link "{{ $project->title }}"</a>
                 <p class="card-text">{{ $project->content }}</p>
             </div>
