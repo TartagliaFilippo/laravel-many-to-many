@@ -37,9 +37,9 @@
             @enderror
 
             @foreach ($technologies as $technology)
-                <input type="checkbox" name="tecnologies[]" id="tecnologies-{{ $technology->id }}"
+                <input type="checkbox" name="technologies[]" id="technologies-{{ $technology->id }}"
                     value="{{ $technology->id }}" class="form-check-control">
-                <label for="tecnologies-{{ $technology->id }}">{{ $technology->label }}</label>
+                <label for="technologies-{{ $technology->id }}">{{ $technology->label }}</label>
             @endforeach
 
             <label for="url" class="form-label">Url Progetto</label>
