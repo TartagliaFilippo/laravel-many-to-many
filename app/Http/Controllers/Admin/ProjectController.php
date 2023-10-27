@@ -13,6 +13,7 @@ use App\Models\Technology;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Arr;
 
 class ProjectController extends Controller
 {
@@ -54,7 +55,9 @@ class ProjectController extends Controller
         $project->slug = Str::slug($project->title);
         $project->save();
 
-        $project->technologies()->attach($data['technologies']);
+        if (Arr::exists($data, 'technologies')) {
+            $project->technologies()->attach($data['technologies']);
+        }
 
         return redirect()->route('admin.projects.show', $project);
     }
@@ -79,7 +82,11 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view("admin.projects.edit", compact("project", "types"));
+        $technologies = Technology::all();
+
+        $technology_ids = $project->technologies->pluck('id')->toArray();
+
+        return view("admin.projects.edit", compact("project", "types", "technologies", "technology_ids"));
     }
 
     /**
@@ -93,7 +100,16 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        $project->update($data);
+        $project->fill($data);
+        $project->slug = Str::slug($project->title);
+        $project->save();
+
+        if (Arr::exists($data, 'technologies')) {
+            $project->technologies()->sync($data['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
+
         return redirect()->route('admin.projects.show', $project);
     }
 
@@ -105,6 +121,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->technologies()->detach();
         $project->delete();
         return redirect()->route('admin.projects.index');
     }
