@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
+
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +23,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(15);
+        $projects = Project::paginate(12);
         return view("admin.projects.index", compact("projects"));
     }
 
@@ -31,7 +35,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view("admin.projects.create", compact("types"));
+        $technologies = Technology::all();
+        return view("admin.projects.create", compact("types", "technologies"));
     }
 
     /**
@@ -40,13 +45,17 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        $data = $this->validation($request->all());
+        $data = $request->validated();
+
         $project = new Project;
         $project->fill($data);
         $project->slug = Str::slug($project->title);
         $project->save();
+
+        $project->technologies()->attach($data['technologies']);
+
         return redirect()->route('admin.projects.show', $project);
     }
 
@@ -80,9 +89,10 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        $data = $this->validation($request->all(), $project->id);
+        $data = $request->validated();
+
         $project->update($data);
         return redirect()->route('admin.projects.show', $project);
     }
@@ -97,31 +107,5 @@ class ProjectController extends Controller
     {
         $project->delete();
         return redirect()->route('admin.projects.index');
-    }
-
-    private function validation($data)
-    {
-        $validator = Validator::make(
-            $data,
-            [
-                'title' => 'required|string',
-                'type_id' => 'nullable|integer',
-                'url' => "required|url",
-                "content" => "nullable|string",
-            ],
-            [
-                'title.required' => 'Il titolo è obbligatorio',
-                'title.string' => 'Il titolo deve essere una stringa',
-
-                'type_id.integer' => 'La categoria inserita non è valida',
-
-                'url.required' => 'I\'url è obbligatorio',
-                'url.integer' => 'I\'url deve essere un link',
-
-                'content.string' => 'Il contenuto deve essere una stringa',
-            ]
-        )->validate();
-
-        return $validator;
     }
 }

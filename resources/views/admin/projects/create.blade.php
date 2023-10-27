@@ -36,6 +36,12 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
 
+            @foreach ($technologies as $technology)
+                <input type="checkbox" name="tecnologies[]" id="tecnologies-{{ $technology->id }}"
+                    value="{{ $technology->id }}" class="form-check-control">
+                <label for="tecnologies-{{ $technology->id }}">{{ $technology->label }}</label>
+            @endforeach
+
             <label for="url" class="form-label">Url Progetto</label>
             <input type="text" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
                 value="{{ old('url') }}" />

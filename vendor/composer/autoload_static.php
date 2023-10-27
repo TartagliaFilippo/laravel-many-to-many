@@ -353,8 +353,8 @@ class ComposerStaticInit41068bb7998c6c9b493ffc61ec4b41ea
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -561,6 +561,7 @@ class ComposerStaticInit41068bb7998c6c9b493ffc61ec4b41ea
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
         'App\\Http\\Requests\\ProfileUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/ProfileUpdateRequest.php',
         'App\\Models\\Project' => __DIR__ . '/../..' . '/app/Models/Project.php',
+        'App\\Models\\Technology' => __DIR__ . '/../..' . '/app/Models/Technology.php',
         'App\\Models\\Type' => __DIR__ . '/../..' . '/app/Models/Type.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -681,6 +682,7 @@ class ComposerStaticInit41068bb7998c6c9b493ffc61ec4b41ea
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\ProjectSeeder' => __DIR__ . '/../..' . '/database/seeders/ProjectSeeder.php',
+        'Database\\Seeders\\TechnologiesSeeder' => __DIR__ . '/../..' . '/database/seeders/TechnologiesSeeder.php',
         'Database\\Seeders\\TypeSeeder' => __DIR__ . '/../..' . '/database/seeders/TypeSeeder.php',
         'Database\\Seeders\\UserSeeder' => __DIR__ . '/../..' . '/database/seeders/UserSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
