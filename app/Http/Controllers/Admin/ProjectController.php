@@ -14,6 +14,7 @@ use App\Models\Technology;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -53,6 +54,12 @@ class ProjectController extends Controller
         $project = new Project;
         $project->fill($data);
         $project->slug = Str::slug($project->title);
+
+        if (Arr::exists($data, 'cover_image')) {
+            $cover_image_path = Storage::put('uploads/projects/cover_image', $data['cover_image']);
+            $project->cover_image = $cover_image_path;
+        }
+
         $project->save();
 
         if (Arr::exists($data, 'technologies')) {
