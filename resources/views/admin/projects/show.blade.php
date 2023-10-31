@@ -11,12 +11,16 @@
             <div class="card-body">
                 <div class=""><strong>Tipo:</strong> {!! $project->getTypeBadge() !!}</div>
                 <div class=""><strong>Tecnologie:</strong> {!! $project->getTechnologyBadges() !!}</div>
-                <a href="{{ $project->url }}">Link "{{ $project->title }}"</a>
-                <p class="card-text">{{ $project->content }}</p>
+                <div class="col-10">
+                    <img src="{{ Vite::asset('/storage/' . $project->cover_image) }}" class="img-fluid" alt="">
+                </div>
             </div>
-            <div class="card-footer text-body-secondary">
-                Utima modifica: {{ $project->updated_at }}
-            </div>
+            <a href="{{ $project->url }}">Link "{{ $project->title }}"</a>
+            <p class="card-text">{{ $project->content }}</p>
         </div>
+        <div class="card-footer text-body-secondary">
+            Utima modifica: {{ $project->updated_at }}
+        </div>
+    </div>
     </div>
 @endsection

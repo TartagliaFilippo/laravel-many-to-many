@@ -15,50 +15,76 @@
                 </ul>
             </div>
         @endif
-        <form action="{{ route('admin.projects.store') }}" method="POST" class="mt-5">
+        <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data" class="mt-5">
             @csrf
 
-            <label for="title" class="form-label">Titolo</label>
-            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title"
-                value="{{ old('title') }}" />
-            @error('title')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-
-            <label for="type_id" class="form-label">Tipo</label>
-            <select class="form-select" name="type_id" id="type_id">
-                <option value="">Nessun Tipo</option>
-                @foreach ($types as $type)
-                    <option value="{{ $type->id }}">{{ $type->label }}</option>
-                @endforeach
-            </select>
-            @error('title')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-
-            <div class="form-check @error('technologies') is-invalid @enderror">
-                @foreach ($technologies as $technology)
-                    <input type="checkbox" name="technologies[]" id="technologies-{{ $technology->id }}"
-                        value="{{ $technology->id }}" class="form-check-control"
-                        @if (in_array($technology->id, old('technologies', []))) checked @endif>
-                    <label for="technologies-{{ $technology->id }}">{{ $technology->label }}</label>
-                @endforeach
+            {{-- TITOLO --}}
+            <div class="col-12 mt-3">
+                <label for="title" class="form-label">Titolo</label>
+                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
+                    name="title" value="{{ old('title') }}" />
+                @error('title')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-            <label for="url" class="form-label">Url Progetto</label>
-            <input type="text" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
-                value="{{ old('url') }}" />
-            @error('url')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            {{-- TIPO --}}
+            <div class="col-12 mt-3">
+                <label for="type_id" class="form-label">Tipo</label>
+                <select class="form-select" name="type_id" id="type_id">
+                    <option value="">Nessun Tipo</option>
+                    @foreach ($types as $type)
+                        <option value="{{ $type->id }}">{{ $type->label }}</option>
+                    @endforeach
+                </select>
+                @error('title')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-            <label for="content" class="form-label">Descrizione</label>
-            <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="4">{{ old('content') }}</textarea>
-            @error('content')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            {{-- TECNOLOGIE --}}
+            <div class="col-12 mt-3">
+                <div class="form-check @error('technologies') is-invalid @enderror">
+                    @foreach ($technologies as $technology)
+                        <div class="check-container"><input type="checkbox" name="technologies[]"
+                                id="technologies-{{ $technology->id }}" value="{{ $technology->id }}"
+                                class="form-check-control" @if (in_array($technology->id, old('technologies', []))) checked @endif>
+                            <label for="technologies-{{ $technology->id }}">{{ $technology->label }}</label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
 
-            <button type="submit" class="btn btn-success mt-5">Salva</button>
+            {{-- URL --}}
+            <div class="col-12 mt-3">
+                <label for="url" class="form-label">Url Progetto</label>
+                <input type="text" class="form-control @error('url') is-invalid @enderror" id="url" name="url"
+                    value="{{ old('url') }}" />
+                @error('url')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- IMMAGINE COVER --}}
+            <div class="col-12 mt-3">
+                <label for="cover_image" class="form-label">Immagine Cover</label>
+                <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image"
+                    name="cover_image" value="{{ old('cover_image') }}">
+                @error('cover_image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- DESCRIZIONE --}}
+            <div class="col-12 mt-3">
+                <label for="content" class="form-label">Descrizione</label>
+                <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="4">{{ old('content') }}</textarea>
+                @error('content')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-success my-3">Salva</button>
         </form>
     </div>
 @endsection
