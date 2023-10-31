@@ -26,6 +26,7 @@ class StoreProjectRequest extends FormRequest
         return [
             'title' => ['required', 'string'],
             'url' => ['required', 'url'],
+            'cover_image' => ['nullable', 'image'],
             'content' => ['nullable', 'string'],
             'type_id' => ['nullable', 'exists:types,id'],
             'technologies' => ['nullable', 'exists:technologies,id'],
@@ -40,6 +41,8 @@ class StoreProjectRequest extends FormRequest
 
             'url.required' => 'I\'url è obbligatorio',
             'url.url' => 'I\'url deve essere un link',
+
+            'cover_image.iamge' => 'Il fine deve essere un\'immagine',
 
             'content.string' => 'Il contenuto deve essere una stringa',
 
