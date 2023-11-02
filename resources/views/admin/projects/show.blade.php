@@ -8,11 +8,11 @@
             <div class="card-header">
                 {{ $project->title }}
             </div>
-            <div class="card-body">
+            <div class="card-body d-flex flex-column align-items-center">
                 <div class=""><strong>Tipo:</strong> {!! $project->getTypeBadge() !!}</div>
                 <div class=""><strong>Tecnologie:</strong> {!! $project->getTechnologyBadges() !!}</div>
                 <div class="col-10">
-                    <img src="{{ asset('/storage/' . $project->cover_image) }}" class="img-fluid text-center" alt="">
+                    <img src="{{ asset('/storage/' . $project->cover_image) }}" class="img-fluid" alt="">
                 </div>
             </div>
             <a href="{{ $project->url }}">Link "{{ $project->title }}"</a>
