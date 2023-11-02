@@ -12,7 +12,7 @@
                 <div class=""><strong>Tipo:</strong> {!! $project->getTypeBadge() !!}</div>
                 <div class=""><strong>Tecnologie:</strong> {!! $project->getTechnologyBadges() !!}</div>
                 <div class="col-10">
-                    <img src="{{ Vite::asset('/storage/' . $project->cover_image) }}" class="img-fluid" alt="">
+                    <img src="{{ asset('/storage/' . $project->cover_image) }}" class="img-fluid text-center" alt="">
                 </div>
             </div>
             <a href="{{ $project->url }}">Link "{{ $project->title }}"</a>
