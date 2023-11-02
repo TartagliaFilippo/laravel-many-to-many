@@ -55,7 +55,7 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->slug = Str::slug($project->title);
 
-        if (Arr::exists($data, 'cover_image')) {
+        if ($request->hasFile('cover_image')) {
             $cover_image_path = Storage::put('uploads/projects/cover_image', $data['cover_image']);
             $project->cover_image = $cover_image_path;
         }
@@ -109,6 +109,15 @@ class ProjectController extends Controller
 
         $project->fill($data);
         $project->slug = Str::slug($project->title);
+
+        if ($request->hasFile('cover_image')) {
+            if ($project->cover_image) {
+                Storage::delete($project->cover_image);
+            }
+            $path_cover_image = Storage::put('uploads/projects/cover_image', $data['cover_image']);
+            $project->cover_image = $path_cover_image;
+        }
+
         $project->save();
 
         if (Arr::exists($data, 'technologies')) {
@@ -131,5 +140,13 @@ class ProjectController extends Controller
         $project->technologies()->detach();
         $project->delete();
         return redirect()->route('admin.projects.index');
+    }
+
+    public function deleteImage(Project $project)
+    {
+        Storage::delete($project->cover_image);
+        $project->cover_image = null;
+        $project->save();
+        return redirect()->back();
     }
 }
