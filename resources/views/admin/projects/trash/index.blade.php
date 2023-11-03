@@ -8,11 +8,9 @@
 
 @section('content')
     <div class="container mt-3">
-        <a href="{{ route('admin.projects.create') }}" class="btn btn-outline-warning">Crea un nuovo Progetto</a>
-        <a href="{{ route('admin.projects.trash.index') }}" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i>
-            Vedi
-            cestino</a>
-        <h1>Lista Progetti</h1>
+        <a href="{{ route('admin.projects.index') }}" class="btn btn-outline-primary my-3"><i
+                class="fa-solid fa-arrow-left"></i> Torna alla Lista</a>
+        <h1>Lista Progetti Cestinati</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -21,8 +19,7 @@
                     <th scope="col">Tipo</th>
                     <th scope="col">Tecnologie</th>
                     <th scope="col">Url</th>
-                    <th scope="col">Created At</th>
-                    <th scope="col">Updated At</th>
+                    <th scope="col">Deleted At</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -34,15 +31,9 @@
                         <td>{!! $project->getTypeBadge() !!}</td>
                         <td>{!! $project->getTechnologyBadges() !!}</td>
                         <td>{{ $project->url }}</td>
-                        <td>{{ $project->created_at }}</td>
-                        <td>{{ $project->updated_at }}</td>
                         <td>
-                            <a href="{{ route('admin.projects.show', $project) }}">
-                                <i class="fa-solid fa-eye"></i>
-                            </a>
-                            <a href="{{ route('admin.projects.edit', $project) }}">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
+                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                data-bs-target="#restore-modal-{{ $project->id }}"><i class="fa-solid fa-recycle"></i></a>
                             <a href="javascript:void(0)" data-bs-toggle="modal"
                                 data-bs-target="#delete-modal-{{ $project->id }}">
                                 <i class="fa-solid fa-trash text-danger"></i>
@@ -57,14 +48,12 @@
             </tbody>
         </table>
     </div>
-
     {{ $projects->links('pagination::bootstrap-5') }}
 @endsection
 
 @section('modals')
-    {{-- MODALE DELATE --}}
-
     @foreach ($projects as $project)
+        {{-- MODALE DELATE --}}
         <div class="modal fade" id="delete-modal-{{ $project->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -75,14 +64,41 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Vuoi davvero mettere nel cestino il progetto "{{ $project->title }}"?
+                        Vuoi davvero eliminare <strong>definitivamente</strong> il progetto
+                        "{{ $project->title }}"?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                        <form action="{{ route('admin.projects.trash.force-destroy', $project) }}" method="POST">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-danger">Elimina</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- MODALE RESTORE --}}
+        <div class="modal fade" id="restore-modal-{{ $project->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Ripristina elemento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Vuoi davvero ripristinare il progetto
+                        "{{ $project->title }}"?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                        <form action="{{ route('admin.projects.trash.restore', $project) }}" method="POST">
+                            @method('PATCH')
+                            @csrf
+                            <button class="btn btn-success">Ripristina</button>
                         </form>
                     </div>
                 </div>

@@ -25,7 +25,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(12);
+        $projects = Project::orderByDesc('id')->paginate(12);
         return view("admin.projects.index", compact("projects"));
     }
 
@@ -130,14 +130,13 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Soft Deletes the specified resource from storage.
      *
      * @param  \App\Models\Project  $project
      * * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)
     {
-        $project->technologies()->detach();
         $project->delete();
         return redirect()->route('admin.projects.index');
     }
@@ -148,5 +147,45 @@ class ProjectController extends Controller
         $project->cover_image = null;
         $project->save();
         return redirect()->back();
+    }
+
+    /**
+     * Display a listing of the deleted resource.
+     *
+     * * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $projects = Project::orderByDesc('id')->onlyTrashed()->paginate(12);
+
+        return view("admin.projects.trash.index", compact("projects"));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Project  $project
+     * * @return \Illuminate\Http\Response
+     */
+    public function forceDestroy(int $id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->technologies()->detach();
+        $project->forceDelete();
+
+        return redirect()->route('admin.projects.trash.index');
+    }
+
+    /**
+     * Restore the specified resource in storage.
+     *
+     * @param  Project  $project
+     * * @return \Illuminate\Http\Response
+     */
+    public function restore(int $id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->restore();
+        return redirect()->route('admin.projects.trash.index');
     }
 }
